@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/OkHandTone/Seminaire_automatisation_securite#readme",
   "devDependencies": {
+    "@cucumber/cucumber": "^13.2.0",
     "@playwright/test": "^1.62.0",
-    "@types/node": "^26.1.2"
+    "@types/node": "^26.1.2",
+    "serve": "^14.2.6"
   },
   "directories": {
     "test": "tests"
