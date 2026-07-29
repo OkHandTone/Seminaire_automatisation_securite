@@ -1,19 +1,16 @@
 version: 2
 
 updates:
-  # Dépendances Node.js
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
 
-  # Image Docker
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
 
-  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
