@@ -6,18 +6,21 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OkHandTone/Seminaire_automatisation_securit-.git"
+    "url": "git+https://github.com/OkHandTone/Seminaire_automatisation_securite.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/OkHandTone/Seminaire_automatisation_securit-/issues"
+    "url": "https://github.com/OkHandTone/Seminaire_automatisation_securite/issues"
   },
-  "homepage": "https://github.com/OkHandTone/Seminaire_automatisation_securit-#readme",
+  "homepage": "https://github.com/OkHandTone/Seminaire_automatisation_securite#readme",
   "devDependencies": {
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.2"
+  },
+  "directories": {
+    "test": "tests"
   }
 }
