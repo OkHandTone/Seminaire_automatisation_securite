@@ -1,0 +1,23 @@
+{
+  "name": "seminaire_automatisation_securit-",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OkHandTone/Seminaire_automatisation_securit-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/OkHandTone/Seminaire_automatisation_securit-/issues"
+  },
+  "homepage": "https://github.com/OkHandTone/Seminaire_automatisation_securit-#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.0",
+    "@types/node": "^26.1.2"
+  }
+}
