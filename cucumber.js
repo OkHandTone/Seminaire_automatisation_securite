@@ -1,7 +1,8 @@
 module.exports = {
   default: {
-    require: ['features/steps/**/*.js', 'features/support/**/*.js'],
-    format: ['progress-bar'],
+    paths: ["tests/features/**/*.feature"],
+    require: ["tests/features/steps/**/*.js", "tests/features/support/**/*.js"],
+    format: ["progress-bar"],
     publishQuiet: true,
   },
 };
