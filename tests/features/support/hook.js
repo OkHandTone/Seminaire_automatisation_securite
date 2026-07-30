@@ -11,6 +11,7 @@ const { spawn } = require('child_process');
 setDefaultTimeout(60 * 1000);
 
 let serverProcess;
+let apiProcess;
 
 // Attend que le serveur réponde sur l'URL donnée
 async function waitForServer(url, timeoutMs = 15000) {
@@ -27,18 +28,27 @@ async function waitForServer(url, timeoutMs = 15000) {
   throw new Error(`Le serveur n'a pas démarré sur ${url}`);
 }
 
-// Une seule fois, avant tous les scénarios : on démarre le serveur web
+// Une seule fois, avant tous les scénarios : front statique + API node
 BeforeAll(async function () {
   serverProcess = spawn('npx', ['serve', '-l', '3000', '.'], {
     stdio: 'ignore',
     shell: true,
   });
-  await waitForServer('http://localhost:3000');
+  apiProcess = spawn('node', ['src/api.mjs'], {
+    stdio: 'ignore',
+    shell: true,
+    env: { ...process.env, PORT: '3001' },
+  });
+  await Promise.all([
+    waitForServer('http://localhost:3000'),
+    waitForServer('http://localhost:3001/api/sante'),
+  ]);
 });
 
-// Une seule fois, à la fin : on arrête le serveur
+// Une seule fois, à la fin : on arrête les deux serveurs
 AfterAll(async function () {
   if (serverProcess) serverProcess.kill();
+  if (apiProcess) apiProcess.kill();
 });
 
 // Avant chaque scénario : navigateur + page neufs
