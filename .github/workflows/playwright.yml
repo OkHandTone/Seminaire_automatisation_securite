@@ -33,19 +33,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: "."
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
