@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1785399887740" clover="3.2.0">
+  <project timestamp="1785399887740" name="All files">
+    <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4" elements="8" coveredelements="8" complexity="0" loc="4" ncloc="4" packages="1" files="1" classes="1"/>
+    <file name="utils.js" path="/Users/antoinecaby/Documents/Annee_scolaire_2025-2026/SeminaireAutomatisationEtSecurite/Seminaire_automatisation_securite/src/utils.js">
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
+      <line num="4" count="2" type="stmt"/>
+      <line num="8" count="2" type="stmt"/>
+      <line num="12" count="2" type="stmt"/>
+      <line num="16" count="2" type="stmt"/>
+    </file>
+  </project>
+</coverage>
