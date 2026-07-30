@@ -71,15 +71,15 @@ export default defineConfig({
     // },
   ],
 
-  /* Démarre le front statique ET le mini serveur node (API) avant les tests */
+  /* Démarre le front React (Vite) ET l'API Express avant les tests */
   webServer: [
     {
-      command: "npx serve -l 3000 .",
-      url: "http://localhost:3000",
+      command: "npm run dev",
+      url: "http://localhost:5173",
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: "node src/api.mjs",
+      command: "node server/index.js",
       url: "http://localhost:3001/api/sante",
       env: { PORT: "3001" },
       reuseExistingServer: !process.env.CI,

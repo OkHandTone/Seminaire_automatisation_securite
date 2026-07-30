@@ -1,8 +1,8 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
-const { expect } = require('@playwright/test');
+import { Given, When, Then } from '@cucumber/cucumber';
+import { expect } from '@playwright/test';
 
 Given('je visite la page', async function () {
-  await this.page.goto('http://localhost:3000');
+  await this.page.goto('http://localhost:5173');
 });
 
 Then('le titre de la page est {string}', async function (titreAttendu) {
@@ -19,7 +19,7 @@ When(
   }
 );
 
-Then('mon badge {string} s\'affiche', async function (badgeAttendu) {
+Then("mon badge {string} s'affiche", async function (badgeAttendu) {
   await expect(this.page.locator('#confirmation')).toBeVisible();
   await expect(this.page.locator('#badge')).toHaveText(badgeAttendu);
 });
@@ -28,6 +28,6 @@ When('je valide le formulaire sans rien remplir', async function () {
   await this.page.locator('#bouton-inscription').click();
 });
 
-Then('un message d\'erreur sur le nom s\'affiche', async function () {
+Then("un message d'erreur sur le nom s'affiche", async function () {
   await expect(this.page.locator('#erreur-nom')).not.toBeEmpty();
 });

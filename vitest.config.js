@@ -1,12 +1,13 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  // On force la racine du projet pour ne pas hériter du root "client"
+  // défini dans vite.config.js.
+  root: '.',
   test: {
-    // On limite Vitest aux fichiers *.test.js pour éviter de récupérer
-    // les specs Playwright qui utilisent l'extension *.spec.js
-    include: ["tests/{unit,integration}/**/*.test.js"],
-    exclude: ["node_modules", "test-results", "features"],
-    environment: "node",
+    include: ['tests/{unit,integration}/**/*.test.js'],
+    exclude: ['node_modules', 'dist', 'test-results'],
+    environment: 'node',
     globals: true,
   },
 });

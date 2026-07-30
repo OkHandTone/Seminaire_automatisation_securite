@@ -1,4 +1,7 @@
 
+# Build Vite
+/dist/
+
 # Playwright
 node_modules/
 /test-results/
