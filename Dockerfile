@@ -1,10 +1,8 @@
-FROM mcr.microsoft.com/playwright:v1.62.0-jammy
+FROM nginx:1.27-alpine
 
-WORKDIR /app
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY index.html /usr/share/nginx/html/index.html
 
-COPY package.json package-lock.json ./
-RUN npm ci
+EXPOSE 10000
 
-COPY . .
-
-CMD ["npx", "playwright", "test"]
+CMD ["nginx", "-g", "daemon off;"]
