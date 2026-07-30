@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { addition, estPair, inverser, slugifier } from "../../src/utils.js";
+import { addition, estPair, inverser, slugifier } from "../../src/utils.mjs";
 
 describe("addition", () => {
   it("additionne deux nombres positifs", () => {
