@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "coverage": "vitest run --coverage",
+    "test:e2e": "cucumber-js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OkHandTone/Seminaire_automatisation_securite.git"
@@ -24,5 +30,8 @@
   },
   "directories": {
     "test": "tests"
+  },
+  "dependencies": {
+    "vitest": "^4.1.10"
   }
 }
