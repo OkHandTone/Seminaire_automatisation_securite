@@ -44,9 +44,25 @@ function lireCorpsJson(req) {
   });
 }
 
+// Autorise le front (servi sur un autre port) à appeler l'API.
+function appliquerCors(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+}
+
 export function creerServeur() {
   return http.createServer(async (req, res) => {
     const { method, url } = req;
+
+    appliquerCors(res);
+
+    // Requête préliminaire CORS (preflight) envoyée par le navigateur.
+    if (method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
 
     // Point de santé, utile pour les sondes de déploiement (Render/Docker).
     if (method === 'GET' && url === '/api/sante') {

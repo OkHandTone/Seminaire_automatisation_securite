@@ -95,6 +95,15 @@ describe('GET /api/inscriptions', () => {
   });
 });
 
+describe('CORS', () => {
+  it('répond au preflight OPTIONS avec les en-têtes CORS', async () => {
+    const res = await fetch(`${base}/api/inscriptions`, { method: 'OPTIONS' });
+    expect(res.status).toBe(204);
+    expect(res.headers.get('access-control-allow-origin')).toBe('*');
+    expect(res.headers.get('access-control-allow-methods')).toContain('POST');
+  });
+});
+
 describe('routage', () => {
   it('renvoie 405 sur une méthode non autorisée', async () => {
     const res = await fetch(`${base}/api/inscriptions`, { method: 'PUT' });
