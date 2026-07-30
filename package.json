@@ -8,7 +8,8 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "test:e2e": "cucumber-js"
+    "test:e2e": "cucumber-js",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "@cucumber/cucumber": "^13.2.0",
     "@playwright/test": "^1.62.0",
     "@types/node": "^26.1.2",
+    "husky": "^9.1.7",
     "serve": "^14.2.6"
   },
   "directories": {
