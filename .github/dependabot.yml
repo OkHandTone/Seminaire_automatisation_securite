@@ -5,7 +5,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
       time: "08:00"
       timezone: "Europe/Paris"
 
@@ -20,7 +21,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
       time: "08:15"
       timezone: "Europe/Paris"
 
@@ -33,6 +35,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
       time: "08:30"
       timezone: "Europe/Paris"
