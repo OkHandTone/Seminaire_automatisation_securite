@@ -17,5 +17,7 @@ export function slugifier(texte) {
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    // Les suites de non-alphanumériques sont déjà réduites à un seul '-',
+    // donc un simple ^- / -$ suffit (pas de quantificateur = pas de ReDoS).
+    .replace(/^-|-$/g, '');
 }
