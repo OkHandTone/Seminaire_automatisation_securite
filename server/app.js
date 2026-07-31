@@ -3,10 +3,26 @@
 // tester directement avec supertest (tests d'intégration).
 
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import { validerInscription } from '../src/inscription.mjs';
 
 export function creerApp() {
   const app = express();
+
+  // Derrière le proxy de Render : fait confiance au 1er hop pour lire la
+  // vraie IP client (X-Forwarded-For), utile au rate-limiter.
+  app.set('trust proxy', 1);
+
+  // Limitation de débit : protège toutes les routes (API + fichiers statiques
+  // servis en aval) contre les abus / déni de service.
+  app.use(
+    rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 300, // requêtes par IP et par fenêtre
+      standardHeaders: true,
+      legacyHeaders: false,
+    })
+  );
 
   // Corps JSON limité à 100 Ko : garde-fou anti-abus.
   app.use(express.json({ limit: '100kb' }));
