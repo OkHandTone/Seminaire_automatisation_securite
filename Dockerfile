@@ -11,7 +11,8 @@ FROM node:20-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY package*.json ./
-RUN npm ci --omit=dev
+# --ignore-scripts : pas de hook husky (devDep absente) dans l'image runtime.
+RUN npm ci --omit=dev --ignore-scripts
 COPY server ./server
 COPY src ./src
 COPY --from=build /app/dist ./dist
