@@ -1,8 +1,13 @@
+# Blueprint Render — un seul Web Service Docker qui build le front React
+# (Vite) et l'exécute avec l'API dans le même serveur Express.
+# Voir Dockerfile (build multi-étapes -> node server/index.js).
 services:
   - type: web
-    name: seminaire-automatisation
+    name: seminaire-automatisation-securite
     runtime: docker
     plan: free
+    branch: main
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/sante
+    autoDeploy: true
