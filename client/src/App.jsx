@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-// URL du serveur Express. Configurable au build via VITE_API_URL.
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+// L'API est servie par le même service (même origine) : on utilise donc
+// des URL relatives. En dev, Vite proxifie /api vers le serveur Express
+// (voir vite.config.js). Surchargeable au build via VITE_API_URL.
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 const CHAMPS_INITIAUX = { nom: '', email: '', type: '' };
 
