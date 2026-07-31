@@ -85,7 +85,6 @@ Assumé, et justifié — ce n'est pas un oubli.
 | Ce qu'on ne fait **pas** ici | Pourquoi c'est un choix |
 |---|---|
 | Base de données **dans le démonstrateur** | Ici les données sont gardées en mémoire pour rester simple. ⚠️ **Ce n'est valable que pour la démo** : un vrai projet devra **conserver les données** (voir encadré ci-dessous). |
-| Coder les **8 cas d'usage** (§3) | Un seul suffit à prouver la chaîne ; les 7 autres réutilisent le même squelette |
 | Interface graphique riche | On garde le portail simple pour laisser la **chaîne** au premier plan |
 
 > 💾 **Important — la persistance des données dans un vrai projet.** Le démonstrateur conserve les
@@ -96,11 +95,6 @@ Assumé, et justifié — ce n'est pas un oubli.
 > est prévue pour l'accueillir : ajouter une base de données ne change ni les tests, ni les contrôles
 > qualité/sécurité, ni le déploiement. La **fin de vie propre** (effacement des données à la fin de
 > l'événement) reste alors une étape maîtrisée, mais volontaire, et non plus un simple arrêt du service.
-
-> ⚠️ **Point d'attention n°2.** Le client liste **8 cas d'usage** possibles (accréditations, exposants,
-> salles, bénévoles, logistique, portail visiteurs, tableaux de bord, administration). Notre démo n'en
-> montre **qu'un**. Message à préparer : *la chaîne est indépendante du cas d'usage — le portail n'est
-> qu'une preuve, les autres suivraient le même moule.*
 
 ---
 
@@ -115,7 +109,7 @@ Résumé des « Could have » ci-dessus, du point de vue du bénéfice client :
 - **La transparence** : nous documentons noir sur blanc ce qui n'est *pas* encore fait. C'est un signe
   de sérieux, pas de faiblesse.
 
-> ⚠️ **Point d'attention n°3.** Le §5 demande de décrire le **lien avec l'infrastructure de la réponse
+> ⚠️ **Point d'attention n°2.** Le §5 demande de décrire le **lien avec l'infrastructure de la réponse
 > principale** (là où tournent réellement les applications). Ce point doit être explicité : notre
 > document technique l'évoque mais reste général.
 
@@ -162,11 +156,10 @@ de sérieux : ce ne sont pas des défauts, ce sont la **contrepartie assumée** 
 > blocage automatique est *l'effet recherché* — mieux vaut une livraison bloquée qu'une panne le jour
 > J. **La valeur de notre chaîne se mesure à ce qu'elle refuse de laisser passer.**
 
-Et les trois points d'attention à ne pas éluder :
+Et les deux points d'attention à ne pas éluder :
 
 1. **Sécurité 3/6** — annoncer les 3 contrôles restants comme feuille de route.
-2. **1 cas d'usage sur 8** — expliquer que la chaîne est indépendante du cas d'usage.
-3. **Lien avec l'infrastructure principale** — à expliciter.
+2. **Lien avec l'infrastructure principale** — à expliciter.
 
 ---
 
