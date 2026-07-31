@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from './useTheme.js';
 
 // L'API est servie par le même service (même origine) : on utilise donc
 // des URL relatives. En dev, Vite proxifie /api vers le serveur Express
@@ -8,6 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL || '';
 const CHAMPS_INITIAUX = { nom: '', email: '', type: '' };
 
 export default function App() {
+  const { theme, basculer } = useTheme();
   const [form, setForm] = useState(CHAMPS_INITIAUX);
   const [erreurs, setErreurs] = useState({});
   const [badge, setBadge] = useState(null);
@@ -45,7 +47,27 @@ export default function App() {
 
   return (
     <main>
-      <h1 id="titre">Salon de la Tech 2026</h1>
+      <div className="entete">
+        <h1 id="titre">Salon de la Tech 2026</h1>
+        <button
+          type="button"
+          id="bascule-theme"
+          onClick={basculer}
+          aria-pressed={theme === 'dark'}
+          aria-label={
+            theme === 'dark'
+              ? 'Activer le thème clair'
+              : 'Activer le thème sombre'
+          }
+          title={
+            theme === 'dark'
+              ? 'Activer le thème clair'
+              : 'Activer le thème sombre'
+          }
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
       <p className="sous-titre">
         Inscrivez-vous et récupérez votre badge d'accès.
       </p>
