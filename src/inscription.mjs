@@ -15,7 +15,9 @@ export function validerNom(nom) {
 // Validation d'email volontairement simple mais suffisante pour l'exemple.
 export function validerEmail(email) {
   if (typeof email !== 'string') return false;
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  // Labels de domaine sans point (?:\.[^\s@.]+)+ : pas d'ambiguïté de
+  // découpage, donc pas de backtracking (évite le ReDoS).
+  return /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/.test(email.trim());
 }
 
 // Le type de billet doit faire partie de la liste autorisée.

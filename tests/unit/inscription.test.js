@@ -30,6 +30,10 @@ describe('validerEmail', () => {
     expect(validerEmail('marie.example.com')).toBe(false);
     expect(validerEmail('')).toBe(false);
   });
+
+  it('rejette rapidement une entrée piège (non-régression ReDoS)', () => {
+    expect(validerEmail(`a@${'!.'.repeat(10000)}`)).toBe(false);
+  });
 });
 
 describe('validerTypeBillet', () => {

@@ -39,4 +39,8 @@ describe("slugifier", () => {
   it("supprime les tirets superflus", () => {
     expect(slugifier("  --Test-- ")).toBe("test");
   });
+
+  it("gère une longue suite de tirets sans ralentir (non-régression ReDoS)", () => {
+    expect(slugifier("-".repeat(10000) + "x")).toBe("x");
+  });
 });
