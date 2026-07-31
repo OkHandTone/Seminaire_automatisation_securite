@@ -5,7 +5,7 @@ body {
   background: var(--bg); margin: 0; padding: 2rem; color: #1f2937;
 }
 main {
-  max-width: 460px; margin: 0 auto; background: #fff;
+  max-width: 520px; margin: 0 auto; background: #fff;
   padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.06);
 }
 h1 { margin-top: 0; font-size: 1.4rem; }
@@ -28,3 +28,17 @@ button:disabled { opacity: .6; cursor: progress; }
 }
 #confirmation[hidden] { display: none; }
 #badge { font-family: monospace; font-weight: 700; }
+
+#liste-inscrits { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; }
+#liste-inscrits h2 { font-size: 1.1rem; margin: 0 0 .25rem; }
+.aide-liste { color: #6b7280; font-size: .85rem; margin: 0 0 1rem; }
+#liste-vide { color: #6b7280; font-size: .9rem; }
+#inscrits { list-style: none; padding: 0; margin: 0; }
+#inscrits li {
+  display: grid; grid-template-columns: 1fr auto auto; gap: .75rem;
+  align-items: center; padding: .6rem 0; border-bottom: 1px solid #f3f4f6;
+  font-size: .9rem;
+}
+.inscrit-nom { font-weight: 600; }
+.inscrit-type { text-transform: uppercase; font-size: .75rem; color: #6b7280; }
+.inscrit-badge { font-family: monospace; font-size: .8rem; color: var(--accent); }

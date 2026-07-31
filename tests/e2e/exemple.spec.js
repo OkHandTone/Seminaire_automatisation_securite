@@ -28,3 +28,20 @@ test('une inscription invalide affiche les erreurs', async ({ page }) => {
   await expect(page.locator('#erreur-email')).not.toBeEmpty();
   await expect(page.locator('#erreur-type')).not.toBeEmpty();
 });
+
+test('la liste des inscrits apparaît sans e-mail', async ({ page }) => {
+  await page.locator('#nom').fill('Jean Martin');
+  await page.locator('#email').fill('jean.martin@example.com');
+  await page.locator('#type').selectOption('standard');
+  await page.locator('#bouton-inscription').click();
+
+  await expect(page.locator('#inscrits li')).toHaveCount(1);
+  await expect(page.locator('#inscrits .inscrit-nom')).toHaveText('Jean Martin');
+  await expect(page.locator('#inscrits .inscrit-type')).toHaveText('standard');
+  await expect(page.locator('#inscrits .inscrit-badge')).toHaveText(
+    'STANDARD-jean-martin'
+  );
+  await expect(page.locator('#liste-inscrits')).not.toContainText(
+    'jean.martin@example.com'
+  );
+});

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 // L'API est servie par le même service (même origine) : on utilise donc
 // des URL relatives. En dev, Vite proxifie /api vers le serveur Express
@@ -13,9 +13,32 @@ export default function App() {
   const [badge, setBadge] = useState(null);
   const [erreurReseau, setErreurReseau] = useState(null);
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
+  const [inscrits, setInscrits] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [erreurListe, setErreurListe] = useState(null);
 
   const maj = (champ) => (e) =>
     setForm((f) => ({ ...f, [champ]: e.target.value }));
+
+  const chargerInscrits = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/inscriptions`);
+      const data = await res.json();
+      if (!res.ok) {
+        setErreurListe('Impossible de charger la liste des inscrits.');
+        return;
+      }
+      setInscrits(data.inscriptions || []);
+      setTotal(data.total ?? 0);
+      setErreurListe(null);
+    } catch {
+      setErreurListe('Impossible de charger la liste des inscrits.');
+    }
+  }, []);
+
+  useEffect(() => {
+    chargerInscrits();
+  }, [chargerInscrits]);
 
   async function soumettre(e) {
     e.preventDefault();
@@ -33,6 +56,7 @@ export default function App() {
       if (res.ok) {
         setBadge(data.badge);
         setForm(CHAMPS_INITIAUX);
+        await chargerInscrits();
       } else {
         setErreurs(data.erreurs || {});
       }
@@ -94,6 +118,28 @@ export default function App() {
         Inscription confirmée ! Votre identifiant de badge :{' '}
         <span id="badge">{badge || ''}</span>
       </div>
+
+      <section id="liste-inscrits" aria-labelledby="titre-inscrits">
+        <h2 id="titre-inscrits">Inscrits ({total})</h2>
+        <p className="aide-liste">Les adresses e-mail ne sont pas affichées.</p>
+        {erreurListe && (
+          <div className="erreur" id="erreur-liste">{erreurListe}</div>
+        )}
+        {!erreurListe && inscrits.length === 0 && (
+          <p id="liste-vide">Aucun inscrit pour le moment.</p>
+        )}
+        {inscrits.length > 0 && (
+          <ul id="inscrits">
+            {inscrits.map((i) => (
+              <li key={i.badge} data-badge={i.badge}>
+                <span className="inscrit-nom">{i.nom}</span>
+                <span className="inscrit-type">{i.type}</span>
+                <span className="inscrit-badge">{i.badge}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }
