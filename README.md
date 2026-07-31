@@ -81,7 +81,7 @@ flowchart LR
 4. **Intégration continue** — à chaque `push`/PR, GitHub Actions exécute tests, analyse qualité et analyses de sécurité.
 5. **Portes de qualité/sécurité** — la *quality gate* SonarCloud et les critères bloquants Trivy (sévérités `CRITICAL`/`HIGH`) doivent passer.
 6. **Déploiement continu** — sur la branche de production, l'image Docker est construite et déployée automatiquement sur Render, avec sonde de santé.
-7. **Fin de vie** — l'application étant éphémère, le service est simplement arrêté à la fin de l'événement ; les données sont en mémoire (aucune persistance résiduelle à purger).
+7. **Fin de vie** — l'application étant éphémère, le service est arrêté à la fin de l'événement. Dans **ce démonstrateur**, les données sont conservées **en mémoire** (aucune persistance résiduelle à purger). ⚠️ **Pour un projet réel, ce n'est pas suffisant** : les inscriptions/accréditations doivent survivre à un redémarrage et sont souvent intégrées au SI du client (annexe §1) — une **base de données** (ou tout autre stockage durable) est alors requise. La chaîne l'accueille sans modification (mêmes tests, mêmes portes qualité/sécurité, même déploiement) ; la fin de vie devient alors une **purge maîtrisée et volontaire** des données, et non un simple arrêt.
 
 ---
 
