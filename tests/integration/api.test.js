@@ -42,6 +42,30 @@ describe('POST /api/inscriptions', () => {
       .set('Content-Type', 'application/json')
       .send('{ ceci nest pas du json');
     expect(res.status).toBe(400);
+    expect(res.body.erreur).toBe('JSON invalide');
+  });
+
+  it('refuse un corps trop volumineux', async () => {
+    const gros = JSON.stringify({
+      nom: 'x'.repeat(200_000),
+      email: 'a@b.com',
+      type: 'vip',
+    });
+    const res = await request(app)
+      .post('/api/inscriptions')
+      .set('Content-Type', 'application/json')
+      .send(gros);
+    expect(res.status).toBe(400);
+    expect(res.body.erreur).toBe('Requête invalide');
+  });
+
+  it('refuse un POST dont le contenu n\'est pas du JSON', async () => {
+    const res = await request(app)
+      .post('/api/inscriptions')
+      .set('Content-Type', 'text/plain')
+      .send('bonjour');
+    expect(res.status).toBe(400);
+    expect(res.body.erreurs).toBeDefined();
   });
 });
 

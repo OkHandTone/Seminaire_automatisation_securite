@@ -9,5 +9,15 @@ export default defineConfig({
     exclude: ['node_modules', 'dist', 'test-results'],
     environment: 'node',
     globals: true,
+    coverage: {
+      provider: 'v8',
+      // On mesure la logique testable par Vitest (le front React est couvert
+      // par les tests e2e Playwright, pas ici).
+      include: ['src/**/*.mjs', 'server/**/*.js'],
+      // index.js n'est qu'un point d'entrée (démarre le serveur).
+      exclude: ['server/index.js'],
+      all: true,
+      reporter: ['text', 'html'],
+    },
   },
 });

@@ -40,7 +40,8 @@ export function creerApp() {
 
   // Création d'une inscription.
   app.post('/api/inscriptions', (req, res) => {
-    const resultat = validerInscription(req.body ?? {});
+    // validerInscription applique lui-même un défaut {} si le corps est absent.
+    const resultat = validerInscription(req.body);
     if (!resultat.valide) {
       return res.status(400).json({ erreurs: resultat.erreurs });
     }
@@ -50,13 +51,13 @@ export function creerApp() {
     res.status(201).json({ badge: resultat.badge, type });
   });
 
-  // Corps JSON malformé (erreur levée par express.json()).
-  app.use((err, req, res, next) => {
-    if (err.type === 'entity.parse.failed') {
-      return res.status(400).json({ erreur: 'JSON invalide' });
-    }
-    if (err) return res.status(400).json({ erreur: 'Requête invalide' });
-    next();
+  // Erreurs levées par express.json() : JSON malformé ou corps trop
+  // volumineux. La signature à 4 arguments (dont _next non utilisé) est
+  // requise par Express pour reconnaître un middleware d'erreur.
+  app.use((err, req, res, _next) => {
+    const message =
+      err.type === 'entity.parse.failed' ? 'JSON invalide' : 'Requête invalide';
+    res.status(400).json({ erreur: message });
   });
 
   return app;
