@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { addition, estPair, inverser, slugifier } from "../../src/utils.js";
+import { addition, estPair, inverser, slugifier } from "../../src/utils.mjs";
 
 describe("addition", () => {
   it("additionne deux nombres positifs", () => {
@@ -38,5 +38,9 @@ describe("slugifier", () => {
 
   it("supprime les tirets superflus", () => {
     expect(slugifier("  --Test-- ")).toBe("test");
+  });
+
+  it("gère une longue suite de tirets sans ralentir (non-régression ReDoS)", () => {
+    expect(slugifier("-".repeat(10000) + "x")).toBe("x");
   });
 });

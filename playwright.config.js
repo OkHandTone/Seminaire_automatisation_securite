@@ -71,10 +71,18 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "npx serve -l 3000 .",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-  },
+  /* Démarre le front React (Vite) ET l'API Express avant les tests */
+  webServer: [
+    {
+      command: "npm run dev",
+      url: "http://localhost:5173",
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: "node server/index.js",
+      url: "http://localhost:3001/api/sante",
+      env: { PORT: "3001" },
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });

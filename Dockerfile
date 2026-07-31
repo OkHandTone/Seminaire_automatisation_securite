@@ -1,7 +1,18 @@
-FROM nginx:1.27-alpine
+# Étape 1 : build du front React avec Vite.
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+# URL de l'API injectée au build (surchargeable : --build-arg VITE_API_URL=...).
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+RUN npm run build
 
+# Étape 2 : service des fichiers statiques par nginx.
+FROM nginx:1.27-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 10000
 
