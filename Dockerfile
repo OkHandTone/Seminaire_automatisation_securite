@@ -4,16 +4,20 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-# URL de l'API injectée au build (surchargeable : --build-arg VITE_API_URL=...).
-ARG VITE_API_URL
-ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
-# Étape 2 : service des fichiers statiques par nginx.
-FROM nginx:1.31-alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+# Étape 2 : runtime Node — un seul service Express qui sert l'API ET le front.
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY server ./server
+COPY src ./src
+COPY --from=build /app/dist ./dist
 
+# Render fournit la variable PORT ; le serveur s'y adapte (défaut 10000).
+ENV PORT=10000
 EXPOSE 10000
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server/index.js"]

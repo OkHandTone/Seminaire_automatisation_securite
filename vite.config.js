@@ -10,6 +10,11 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
   },
-  server: { port: 5173 },
+  // En dev, le front (5173) et l'API (3001) sont sur deux ports : on proxifie
+  // /api vers Express pour rester en même origine (comme en production).
+  server: {
+    port: 5173,
+    proxy: { '/api': 'http://localhost:3001' },
+  },
   preview: { port: 4173 },
 });
