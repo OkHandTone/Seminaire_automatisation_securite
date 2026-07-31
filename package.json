@@ -14,7 +14,7 @@
     "coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "test:bdd": "cucumber-js",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "repository": {
     "type": "git",
