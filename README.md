@@ -6,6 +6,8 @@
 
 L'application de démonstration retenue est un **portail d'inscription à un événement** (« Salon de la Tech 2026 ») : le visiteur s'inscrit, l'API valide la demande et génère un identifiant de badge. Ce cas d'usage figure parmi ceux cités dans l'annexe (§3 : *gestion des accréditations*). Il reste volontairement simple pour laisser la **chaîne outillée** au premier plan.
 
+> **La pile technique est un choix d'illustration, pas une contrainte.** Express et React servent ici à matérialiser la démarche, mais ce sont des **briques interchangeables**. La chaîne (CI/CD, qualité, sécurité, tests, conteneurisation, déploiement) est **agnostique du langage et du framework** : selon le besoin du client, l'équipe disponible ou les contraintes de l'événement, on peut substituer une autre pile (Vue/Svelte/Angular côté front ; Fastify, Python/FastAPI, Go, Java/Spring… côté back) **sans changer la démarche ni les portes de contrôle**. C'est précisément l'objectif du §2 de l'annexe : *un niveau de qualité homogène quelles que soient les technologies retenues*.
+
 ---
 
 ## 1. Positionnement vis-à-vis de l'appel d'offres
@@ -85,14 +87,18 @@ flowchart LR
 
 ## 4. Développement rapide (annexe §4.1)
 
-**Choix technologiques et justification :**
+**Une pile modulable, pas imposée.** Les technologies ci-dessous sont celles du **démonstrateur** ; elles ont été choisies pour leur rapidité de mise en œuvre, mais restent **substituables**. Ce qui ne change pas d'un projet à l'autre, c'est la **méthode** : logique métier isolée et réutilisable, tests à chaque niveau, portes qualité/sécurité automatisées, packaging conteneurisé et déploiement continu. Un autre besoin client → une autre pile, **la même chaîne**.
 
-| Choix | Pourquoi | Contrepartie maîtrisée |
+**Choix technologiques du démonstrateur et justification :**
+
+| Choix | Pourquoi | Alternatives possibles (même chaîne) |
 |---|---|---|
-| **Vite** | Démarrage et *build* quasi instantanés, HMR immédiat → boucle de dev très courte | Écosystème standard, aucun *lock-in* |
-| **React** | Composants réutilisables, large vivier de compétences → montée en charge rapide des équipes | Périmètre volontairement minimal (une SPA) |
-| **Express** | API REST minimale en quelques lignes, très connue → peu de code spécifique | Garde-fous ajoutés (limite de charge, CORS, gestion d'erreurs) |
-| **Fonctions pures (`src/`)** | Réutilisation front/back de la **même** logique de validation → pas de double implémentation | — |
+| **Vite** | Démarrage et *build* quasi instantanés, HMR immédiat → boucle de dev très courte | Tout *bundler* / outil de build (Webpack, esbuild, Turbopack…) |
+| **React** | Composants réutilisables, large vivier de compétences → montée en charge rapide des équipes | Vue, Svelte, Angular, ou rendu serveur (Next, Nuxt…) |
+| **Express** | API REST minimale en quelques lignes, très connue → peu de code spécifique | Fastify, NestJS, Python/FastAPI, Go, Java/Spring… |
+| **Fonctions pures (`src/`)** | Réutilisation front/back de la **même** logique de validation → pas de double implémentation | Principe indépendant du langage |
+
+Ce **découplage assumé** (métier ↔ transport ↔ IHM) est ce qui rend la substitution possible : remplacer Express par un autre framework n'impacte que la couche `server/` ; remplacer React n'impacte que `client/`. La logique métier et l'ensemble de la chaîne d'industrialisation restent inchangés.
 
 **Réutilisation de composants :** la validation d'inscription et la génération de badge sont centralisées dans `src/inscription.mjs` et `src/utils.mjs`, consommées à la fois par l'API et (potentiellement) par le front. Un nouveau projet événementiel réutilise ce squelette et sa chaîne CI/CD sans repartir de zéro.
 
@@ -239,7 +245,7 @@ docker build -t eventsphere .   # image conteneurisée
 
 | Critère d'évaluation | Éléments fournis | Statut |
 |---|---|---|
-| **Rapidité de développement** | Vite + React, réutilisation de composants métier, assistance IA encadrée | ✅ |
+| **Rapidité de développement** | Pile rapide **et modulable** (Vite + React pour la démo, substituable), réutilisation de composants métier, assistance IA encadrée | ✅ |
 | **Industrialisation** | CI GitHub Actions, build Docker multi-stage reproductible, packaging automatisé | ✅ |
 | **Qualité logicielle** | SonarCloud (statique, duplications, quality gate), couverture LCOV | ✅ |
 | **Sécurité** | SCA Trivy + Dependabot, analyse statique, critères bloquants (*Security by Design*) | ✅ socle en place · 🔜 DAST, secrets, scan d'image |
