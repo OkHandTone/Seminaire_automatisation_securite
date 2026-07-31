@@ -2,8 +2,32 @@ name: Playwright Tests
 on:
   push:
     branches: [main]
+    paths:
+      - "client/**"
+      - "src/**"
+      - "server/**"
+      - "tests/e2e/**"
+      - "tests/features/**"
+      - "playwright.config.js"
+      - "cucumber.js"
+      - "vite.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/playwright.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "client/**"
+      - "src/**"
+      - "server/**"
+      - "tests/e2e/**"
+      - "tests/features/**"
+      - "playwright.config.js"
+      - "cucumber.js"
+      - "vite.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/playwright.yml"
 
 permissions:
   contents: read
