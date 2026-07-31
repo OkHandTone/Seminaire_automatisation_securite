@@ -8,6 +8,5 @@ blob-report
 tests
 features
 *.md
-commade_lancement_playwright
 .env
 .env.*
