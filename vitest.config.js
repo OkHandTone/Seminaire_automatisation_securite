@@ -17,7 +17,8 @@ export default defineConfig({
       // index.js n'est qu'un point d'entrée (démarre le serveur).
       exclude: ['server/index.js'],
       all: true,
-      reporter: ['text', 'html'],
+      // 'lcov' -> coverage/lcov.info, consommé par SonarCloud.
+      reporter: ['text', 'html', 'lcov'],
     },
   },
 });
