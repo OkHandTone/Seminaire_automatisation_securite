@@ -21,7 +21,7 @@ L'objectif de l'annexe (§2) n'est pas de livrer une application particulière m
 | **4.3 Qualité logicielle** | SonarCloud (analyse statique, duplications, quality gate) + couverture LCOV | [§6](#6-qualité-logicielle-annexe-43) |
 | **4.4 Sécurité** | SCA (Trivy + Dependabot), analyse statique, critères bloquants — *Security by Design* | [§7](#7-sécurité-des-développements-annexe-44) |
 | **4.5 Tests automatisés** | Unitaires (Vitest), intégration (supertest), fonctionnels (Playwright + Cucumber BDD) | [§8](#8-tests-automatisés-annexe-45) |
-| **4.6 Déploiement** | Conteneurisation + déploiement continu sur Render, sonde de santé, rollback | [§9](#9-déploiement-automatisé-annexe-46) |
+| **4.6 Déploiement** | Conteneurisation + déploiement continu (Render pour la démo, cible substituable jusqu'à K8s/GitOps), sonde de santé, rollback | [§9](#9-déploiement-automatisé-annexe-46) |
 
 ---
 
@@ -43,13 +43,13 @@ flowchart LR
 
     subgraph CD["3. Déploiement continu"]
         B[Build image Docker<br/>multi-stage]
-        R[(Render<br/>service web)]
+        R[(Cible modulable<br/>Render · K8s · service conteneur)]
     end
 
     H --> CI
     T1 & T2 & Q & S -->|quality gate / critères bloquants| B
     B --> R
-    R -->|sonde /| Prod([Production éphémère])
+    R -->|sonde de santé| Prod([Production éphémère])
 ```
 
 **Principe directeur :** chaque modification (`push` / *pull request*) traverse automatiquement les mêmes portes de contrôle — tests, qualité, sécurité — avant toute mise en production. Aucune étape manuelle n'est requise pour qu'une régression ou une vulnérabilité connue bloque la livraison.
@@ -184,14 +184,16 @@ Stratégie en pyramide, entièrement exécutée en CI :
 
 ## 9. Déploiement automatisé (annexe §4.6)
 
-- **Conteneurisation** — image Docker autoportante (front statique servi par nginx), configuration nginx dédiée (`nginx.conf`).
-- **Déploiement continu (CD)** — `render.yaml` décrit le service : Render (re)construit et déploie automatiquement l'image à chaque livraison sur la branche de production. Le déploiement est ainsi **reproductible et traçable** (une image = un commit).
-- **Validation avant déploiement** — les portes CI (tests, qualité, sécurité) conditionnent la fusion vers la branche de production.
-- **Sonde de santé** — `healthCheckPath: /` (Render) et endpoint applicatif `/api/sante` : Render ne bascule le trafic que si le service répond.
-- **Retour arrière (rollback)** — chaque déploiement Render est versionné ; un rollback = redéploiement de l'image précédente en un clic. Le versionnage des applications suit le versionnage Git.
+**Une cible de déploiement modulable.** L'élément qui rend la chaîne portable est l'**image Docker** : c'est le livrable standard, indépendant de la plateforme d'exécution. Render est utilisé ici comme cible d'illustration (simple et gratuit pour un démonstrateur), mais **il est substituable sans toucher au code applicatif** — la même image se déploie sur un cluster **Kubernetes**, un service conteneur *cloud* (ECS, Cloud Run, Azure Container Apps…) ou l'infrastructure événementielle décrite dans la réponse principale.
+
+- **Conteneurisation** — image Docker autoportante (front statique servi par nginx), configuration nginx dédiée (`nginx.conf`). C'est le point de portabilité : *build once, run anywhere*.
+- **Déploiement continu (CD)** — sur le démonstrateur, `render.yaml` décrit le service : Render (re)construit et déploie automatiquement l'image à chaque livraison sur la branche de production. Le déploiement est **reproductible et traçable** (une image = un commit).
+- **Validation avant déploiement** — les portes CI (tests, qualité, sécurité) conditionnent la fusion vers la branche de production, quelle que soit la cible.
+- **Sonde de santé** — endpoint applicatif `/api/sante` + `healthCheckPath` : le trafic n'est basculé que si le service répond (mécanisme équivalent en *readiness/liveness probe* sous Kubernetes).
+- **Retour arrière (rollback)** — chaque déploiement est versionné ; un rollback = redéploiement de l'image précédente (un clic sous Render, `kubectl rollout undo` sous Kubernetes). Le versionnage des applications suit le versionnage Git.
 - **Configuration au build** — l'URL de l'API est injectable via `--build-arg VITE_API_URL=...`, sans reconstruire le code source.
 
-> *Évolution possible :* passage à une approche **GitOps** (état désiré décrit en Git, réconcilié automatiquement) pour un environnement Kubernetes, si l'infrastructure cible le justifie.
+> **Passage à l'échelle — Kubernetes / GitOps.** Pour une cible Kubernetes, la même image s'accompagne de manifestes (Deployment, Service, Ingress) et peut être pilotée en **GitOps** : l'état désiré est décrit dans Git et réconcilié automatiquement par un opérateur (Argo CD / Flux), avec *probes*, montée de version progressive et rollback natifs. La chaîne CI/CD, les portes qualité/sécurité et l'artefact (l'image) restent identiques : seule la couche de déploiement change.
 
 ---
 
@@ -250,4 +252,4 @@ docker build -t eventsphere .   # image conteneurisée
 | **Qualité logicielle** | SonarCloud (statique, duplications, quality gate), couverture LCOV | ✅ |
 | **Sécurité** | SCA Trivy + Dependabot, analyse statique, critères bloquants (*Security by Design*) | ✅ socle en place · 🔜 DAST, secrets, scan d'image |
 | **Validation (tests)** | Pyramide unit/intégration/e2e/BDD, IA pour les jeux de tests, exécution en CI | ✅ |
-| **Déploiement** | Conteneurisation + CD Render, sonde de santé, rollback, traçabilité par commit | ✅ |
+| **Déploiement** | Conteneurisation (cible **modulable** : Render pour la démo, K8s/GitOps à l'échelle), sonde de santé, rollback, traçabilité par commit | ✅ |
